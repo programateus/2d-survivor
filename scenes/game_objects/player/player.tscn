@@ -1,0 +1,169 @@
+[gd_scene load_steps=19 format=3 uid="uid://be34tn57ff21a"]
+
+[ext_resource type="Script" path="res://scenes/game_objects/player/player.gd" id="1_br3kn"]
+[ext_resource type="Texture2D" uid="uid://dbi2blt6um3ge" path="res://scenes/game_objects/player/player.png" id="1_lse8t"]
+[ext_resource type="PackedScene" uid="uid://c4a1hps10dhmj" path="res://scenes/abilities/sword_ability_controller/sword_ability_controller.tscn" id="2_io1j0"]
+[ext_resource type="PackedScene" uid="uid://bx0ve43dydcsb" path="res://scenes/components/health_component/health_component.tscn" id="3_33hlx"]
+[ext_resource type="PackedScene" uid="uid://bhhomx2cmwb1s" path="res://scenes/components/velocity_component/velocity_component.tscn" id="4_a8id1"]
+[ext_resource type="PackedScene" uid="uid://dh7bnv7o73hxk" path="res://scenes/components/health_bar_component/health_bar_component.tscn" id="4_tkx1e"]
+[ext_resource type="PackedScene" uid="uid://c7y0lxdyt4iov" path="res://scenes/components/random_audio_player_2d_component/random_audio_player_2d_component.tscn" id="5_7siyv"]
+[ext_resource type="AudioStream" uid="uid://caxyp2hclqa1g" path="res://assets/audio/impactMining_000.ogg" id="6_dyt82"]
+[ext_resource type="AudioStream" uid="uid://drug5kyjdl6mg" path="res://assets/audio/impactMining_001.ogg" id="7_lv33u"]
+[ext_resource type="AudioStream" uid="uid://b3kywi4b0oidy" path="res://assets/audio/impactMining_002.ogg" id="8_qsqwf"]
+[ext_resource type="AudioStream" uid="uid://b1hny6cjvh6nn" path="res://assets/audio/impactMining_003.ogg" id="9_op0df"]
+[ext_resource type="AudioStream" uid="uid://b13ijtbudjgev" path="res://assets/audio/impactMining_004.ogg" id="10_swgnd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a7xpk"]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_53tbs"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h8tam"]
+radius = 5.0
+
+[sub_resource type="Animation" id="Animation_ev8jn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals/Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals/Sprite2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_c1r8u"]
+resource_name = "walk"
+length = 0.5
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, -12), Vector2(0, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals/Sprite2D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.261799, 0.261799, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals/Sprite2D:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.22222, 0.933333), Vector2(2, 0.7)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dcldn"]
+_data = {
+"RESET": SubResource("Animation_ev8jn"),
+"walk": SubResource("Animation_c1r8u")
+}
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 0
+motion_mode = 1
+script = ExtResource("1_br3kn")
+
+[node name="Abilities" type="Node" parent="."]
+
+[node name="SwordAbilityController" parent="Abilities" instance=ExtResource("2_io1j0")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_33hlx")]
+
+[node name="VelocityComponent" parent="." instance=ExtResource("4_a8id1")]
+max_speed = 90
+acceleration = 25.0
+
+[node name="RandomAudioPlayerComponent" parent="." instance=ExtResource("5_7siyv")]
+streams = Array[AudioStream]([ExtResource("6_dyt82"), ExtResource("7_lv33u"), ExtResource("8_qsqwf"), ExtResource("9_op0df"), ExtResource("10_swgnd")])
+
+[node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_tkx1e")]
+health_component = NodePath("../HealthComponent")
+
+[node name="PickupArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_a7xpk")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_53tbs")
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+position = Vector2(0, -8)
+texture = ExtResource("1_lse8t")
+
+[node name="DamageIntervalTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_h8tam")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dcldn")
+}

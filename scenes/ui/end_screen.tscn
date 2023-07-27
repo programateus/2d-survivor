@@ -1,0 +1,122 @@
+[gd_scene load_steps=8 format=3 uid="uid://x8klhsqxol52"]
+
+[ext_resource type="Script" path="res://scenes/ui/end_screen.gd" id="1_tr5ol"]
+[ext_resource type="PackedScene" uid="uid://1abfj3ghfswr" path="res://scenes/ui/sound_button.tscn" id="2_ocnfq"]
+[ext_resource type="AudioStream" uid="uid://cvlo3l2c81xt8" path="res://assets/audio/victory_jiggle.ogg" id="3_t4bd8"]
+[ext_resource type="AudioStream" uid="uid://2h7x7d61w4gd" path="res://assets/audio/defeat_jiggle.ogg" id="4_esa37"]
+
+[sub_resource type="Animation" id="Animation_i1mk3"]
+length = 0.15
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bdqt6"]
+resource_name = "in"
+length = 0.15
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kgw0b"]
+_data = {
+"RESET": SubResource("Animation_i1mk3"),
+"in": SubResource("Animation_bdqt6")
+}
+
+[node name="EndScreen" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_tr5ol")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.607843, 0.298039, 0.639216, 0.313726)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Victory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "You Won!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" instance=ExtResource("2_ocnfq")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restart"
+
+[node name="QuitButton" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" instance=ExtResource("2_ocnfq")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "in"
+libraries = {
+"": SubResource("AnimationLibrary_kgw0b")
+}
+
+[node name="VictoryStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_t4bd8")
+volume_db = -8.0
+bus = &"sfx"
+
+[node name="DefeatStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_esa37")
+volume_db = -8.0
+bus = &"sfx"

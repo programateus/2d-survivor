@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://colmjwr7brahp"]
+
+[node name="Entities" type="Node2D" groups=["entities_layer"]]
+y_sort_enabled = true
